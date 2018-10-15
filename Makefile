@@ -55,8 +55,8 @@ DEFINES += -D__STL_CONFIG_H
 CXXFLAGS += -D__STDC_CONSTANT_MACROS
 
 ILCDIR   =ilclient
-VCINCDIR =$(SDKSTAGE)/opt/vc/include
-VCLIBDIR =$(SDKSTAGE)/opt/vc/lib
+VCINCDIR =$(SDKSTAGE)/usr/include
+VCLIBDIR =$(SDKSTAGE)/usr/lib
 SIGC2LIBDIR =/usr/include/sigc++-2.0
 SIGC2LIBDIR2 =/usr/lib/arm-linux-gnueabihf/sigc++-2.0/include
 
@@ -66,6 +66,7 @@ INCLUDES += -I$(VCINCDIR)/interface/vmcs_host/linux -I$(SIGC2LIBDIR) -I$(SIGC2LI
 LDLIBS  += -lbcm_host -lvcos -lvchiq_arm -lopenmaxil -lGLESv2 -lEGL -lpthread -lrt
 LDLIBS  += -Wl,--whole-archive $(ILCDIR)/libilclient.a -Wl,--no-whole-archive
 LDFLAGS += -L$(VCLIBDIR)
+# LDFLAGS += -L$(VCLIBDIR) -lbcm_host -lvcos -lvchiq_arm -lopenmaxil -lGLESv2 -lEGL -lpthread -lrt -lavcodec -lavformat -lswresample
 
 DEBUG ?= 0
 ifeq ($(DEBUG), 1)
@@ -116,6 +117,9 @@ endif
 
 LDLIBS   += $(shell pkg-config --libs freetype2)
 INCLUDES += $(shell pkg-config --cflags freetype2)
+
+LDLIBS   += $(shell pkg-config --libs enigma2)
+INCLUDES += $(shell pkg-config --cflags enigma2)
 
 ### The object files (add further files here):
 

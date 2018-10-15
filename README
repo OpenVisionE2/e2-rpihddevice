@@ -11,7 +11,7 @@ See the file COPYING for license information.
 Description:
 
   Enigma2 HD output device for Raspberry Pi. The plugin makes use of the Raspberry
-  Pi's VideoCore GPU and provides a lightweight implementation for a Enigma2 output
+  Pi's VideoCore GPU and provides a lightweight implementation for Enigma2 output
   device.
 
 Features:
@@ -43,7 +43,7 @@ Install:
   VDR plugin:
 
   $ cd /usr/src/vdr/PLUGINS/src
-  $ git clone git://projects.vdr-developer.org/vdr-plugin-rpihddevice.git rpihddevice
+  $ git clone https://github.com/PLi-metas/e2-rpihddevice.git rpihddevice
   $ cd rpihddevice
   $ make
   $ make install

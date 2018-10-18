@@ -20,8 +20,6 @@
 #ifndef OMX_DEVICE_H
 #define OMX_DEVICE_H
 
-#include <vdr/device.h>		//#include <lib/base/condVar.h>
-
 #include "rpitools.h"
 
 #include <lib/base/eerror.h>
@@ -30,7 +28,7 @@ class cOmx;
 class cRpiAudioDecoder;
 class cMutex;
 
-class cOmxDevice : cDevice
+class cOmxDevice //: cDevice
 {
 
 public:
@@ -71,36 +69,11 @@ public:
 		///< or 1.77778 for 16:9.
 		///< The default implementation returns 0 for Width and Height
 		///< and 1.0 for VideoAspect.
+/*	
 	virtual cRect CanScaleVideo(const cRect &Rect, int Alignment = taCenter)
 		{ return Rect; }
-		///< Asks the output device whether it can scale the currently shown video in
-		///< such a way that it fits into the given Rect, while retaining its proper
-		///< aspect ratio. If the scaled video doesn't exactly fit into Rect, Alignment
-		///< is used to determine how to align the actual rectangle with the requested
-		///< one. The actual rectangle can be smaller, larger or the same size as the
-		///< given Rect, and its location may differ, depending on the capabilities of
-		///< the output device, which may not be able to display a scaled video at
-		///< arbitrary sizes and locations. The device shall, however, do its best to
-		///< match the requested Rect as closely as possible, preferring a size and
-		///< location that fits completely into the requested Rect if possible.
-		///< Returns the rectangle that can actually be used when scaling the video.
-		///< A skin plugin using this function should rearrange its content according
-		///< to the rectangle returned from calling this function, and should especially
-		///< be prepared for cases where the returned rectangle is way off the requested
-		///< Rect, or even Null. In such cases, the skin may want to fall back to
-		///< working with full screen video.
-		///< The coordinates of Rect are in the range of the width and height returned
-		///< by GetOsdSize().
-		///< If this device can't scale the video, a Null rectangle is returned (this
-		///< is also the default implementation).
 	virtual void ScaleVideo(const cRect &Rect = cRect::Null);
-		///< Scales the currently shown video in such a way that it fits into the given
-		///< Rect. Rect should be one retrieved through a previous call to
-		///< CanScaleVideo() (otherwise results may be undefined).
-		///< Even if video output is scaled, the functions GetVideoSize() and
-		///< GetOsdSize() must still return the same values as if in full screen mode!
-		///< If this device can't scale the video, nothing happens.
-		///< To restore full screen video, call this function with a Null rectangle.
+*/
 	virtual bool SetPlayMode(ePlayMode PlayMode);
 		///< Sets the device into the given play mode.
 		///< Returns true if the operation was successful.

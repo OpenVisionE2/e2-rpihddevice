@@ -128,7 +128,7 @@ OBJS = $(PLUGIN).o rpitools.o rpisetup.o omx.o rpiaudio.o omxdevice.o rpidisplay
 
 ### The main target:
 
-all: $(SOFILE) i18n
+all: $(SOFILE)
 
 ### Implicit rules:
 
@@ -144,32 +144,6 @@ $(DEPFILE): Makefile
 
 -include $(DEPFILE)
 
-### Internationalization (I18N):
-
-PODIR     = po
-I18Npo    = $(wildcard $(PODIR)/*.po)
-I18Nmo    = $(addsuffix .mo, $(foreach file, $(I18Npo), $(basename $(file))))
-I18Nmsgs  = $(addprefix $(DESTDIR)$(LOCDIR)/, $(addsuffix /LC_MESSAGES/vdr-$(PLUGIN).mo, $(notdir $(foreach file, $(I18Npo), $(basename $(file))))))
-I18Npot   = $(PODIR)/$(PLUGIN).pot
-
-%.mo: %.po
-	msgfmt -c -o $@ $<
-
-$(I18Npot): $(wildcard *.c)
-	xgettext -C -cTRANSLATORS --no-wrap --no-location -k -ktr -ktrNOOP --package-name=vdr-$(PLUGIN) --package-version=$(VERSION) --msgid-bugs-address='<see README>' -o $@ `ls $^`
-
-%.po: $(I18Npot)
-	msgmerge -U --no-wrap --no-location --backup=none -q -N $@ $<
-	@touch $@
-
-$(I18Nmsgs): $(DESTDIR)$(LOCDIR)/%/LC_MESSAGES/vdr-$(PLUGIN).mo: $(PODIR)/%.mo
-	install -D -m644 $< $@
-
-.PHONY: i18n
-i18n: $(I18Nmo) $(I18Npot)
-
-install-i18n: $(I18Nmsgs)
-
 ### Targets:
 
 $(SOFILE): $(ILCLIENT) $(OBJS)
@@ -181,7 +155,7 @@ $(ILCLIENT):
 install-lib: $(SOFILE)
 	install -D $^ $(DESTDIR)$(LIBDIR)/$^.$(APIVERSION)
 
-install: install-lib install-i18n
+install: install-lib
 
 dist: $(I18Npo) clean
 	@-rm -rf $(TMPDIR)/$(ARCHIVE)
@@ -192,7 +166,6 @@ dist: $(I18Npo) clean
 	@echo Distribution package created as $(PACKAGE).tgz
 
 clean:
-	@-rm -f $(PODIR)/*.mo $(PODIR)/*.pot
 	@-rm -f $(OBJS) $(DEPFILE) *.so *.tgz core* *~
 	$(MAKE) --no-print-directory -C $(ILCDIR) clean
 

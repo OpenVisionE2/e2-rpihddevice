@@ -55,7 +55,7 @@ const uchar cOmxDevice::s_mpeg2EndOfSequence[4]  = { 0x00, 0x00, 0x01, 0xb7 };
 const uchar cOmxDevice::s_h264EndOfSequence[8] = { 0x00, 0x00, 0x01, 0x0a, 0x00, 0x00, 0x01, 0x0b };
 
 cOmxDevice::cOmxDevice(int display, int layer) :
-	cDevice(),
+//	cDevice(),
 	m_omx(new cOmx()),
 	m_audio(new cRpiAudioDecoder(m_omx)),
 	m_mutex(new cMutex()),
@@ -146,7 +146,7 @@ void cOmxDevice::GetVideoSize(int &Width, int &Height, double &VideoAspect)
 	else
 		VideoAspect = 1.0;
 }
-
+/*
 void cOmxDevice::ScaleVideo(const cRect &Rect)
 {
 	eDebug("[cOmxDevice] ScaleVideo(%d, %d, %d, %d)",
@@ -154,7 +154,7 @@ void cOmxDevice::ScaleVideo(const cRect &Rect)
 
 	m_omx->SetDisplayRegion(Rect.X(), Rect.Y(), Rect.Width(), Rect.Height());
 }
-
+*/
 bool cOmxDevice::SetPlayMode(ePlayMode PlayMode)
 {
 	m_mutex->Lock();
@@ -202,7 +202,8 @@ bool cOmxDevice::SetPlayMode(ePlayMode PlayMode)
 void cOmxDevice::StillPicture(const uchar *Data, int Length)
 {
 	if (Data[0] == 0x47)
-		cDevice::StillPicture(Data, Length);
+		eDebug("[cOmxDevice] StillPicture Data[0] == 0x47");
+//		cDevice::StillPicture(Data, Length);
 	else
 	{
 		eDebug("[cOmxDevice] StillPicture()");
@@ -289,8 +290,7 @@ int cOmxDevice::PlayAudio(const uchar *Data, int Length, uchar Id)
 				eDebug("[cOmxDevice] audio first");
 				m_omx->SetClockScale(
 						s_playbackSpeeds[m_direction][m_playbackSpeed]);
-				m_omx->StartClock(m_hasVideo, m_hasAudio,
-						Transferring() ? PRE_ROLL_LIVE : PRE_ROLL_PLAYBACK);
+//				m_omx->StartClock(m_hasVideo, m_hasAudio, Transferring() ? PRE_ROLL_LIVE : PRE_ROLL_PLAYBACK);
 				m_audioPts = PTS_START_OFFSET + pts;
 				m_playMode = pmAudioOnly;
 			}
@@ -333,13 +333,13 @@ int cOmxDevice::PlayAudio(const uchar *Data, int Length, uchar Id)
 			ret = 0;
 	}
 	m_mutex->Unlock();
-
+/*
 	if (Transferring() && !ret)
 		eDebug("[cOmxDevice] failed to write %d bytes of audio packet!", Length);
 
 	if (ret && Transferring())
 		AdjustLiveSpeed();
-
+*/
 	return ret;
 }
 
@@ -383,8 +383,7 @@ int cOmxDevice::PlayVideo(const uchar *Data, int Length, bool EndOfFrame)
 			eDebug("[cOmxDevice] video first");
 			m_omx->SetClockReference(cOmx::eClockRefVideo);
 			m_omx->SetClockScale(s_playbackSpeeds[m_direction][m_playbackSpeed]);
-			m_omx->StartClock(m_hasVideo, m_hasAudio,
-					Transferring() ? PRE_ROLL_LIVE : PRE_ROLL_PLAYBACK);
+//			m_omx->StartClock(m_hasVideo, m_hasAudio, Transferring() ? PRE_ROLL_LIVE : PRE_ROLL_PLAYBACK);
 			m_videoPts = PTS_START_OFFSET + pts;
 			m_playMode = pmVideoOnly;
 		}
@@ -442,13 +441,13 @@ int cOmxDevice::PlayVideo(const uchar *Data, int Length, bool EndOfFrame)
 		}
 	}
 	m_mutex->Unlock();
-
+/*
 	if (Transferring() && !ret)
 		eDebug("[cOmxDevice] failed to write %d bytes of video packet!", Length);
 
 	if (ret && Transferring())
 		AdjustLiveSpeed();
-
+*/
 	return ret;
 }
 
@@ -533,7 +532,7 @@ void cOmxDevice::Clear(void)
 	m_hasVideo = false;
 
 	m_mutex->Unlock();
-	cDevice::Clear();
+//	cDevice::Clear();
 }
 
 void cOmxDevice::Play(void)
@@ -546,7 +545,7 @@ void cOmxDevice::Play(void)
 	m_omx->SetClockScale(s_playbackSpeeds[m_direction][m_playbackSpeed]);
 
 	m_mutex->Unlock();
-	cDevice::Play();
+//	cDevice::Play();
 }
 
 void cOmxDevice::Freeze(void)
@@ -557,7 +556,7 @@ void cOmxDevice::Freeze(void)
 	m_omx->SetClockScale(s_playbackSpeeds[eForward][ePause]);
 
 	m_mutex->Unlock();
-	cDevice::Freeze();
+//	cDevice::Freeze();
 }
 
 #if APIVERSNUM >= 20103
@@ -688,8 +687,7 @@ void cOmxDevice::HandleEndOfStream()
 	// flush pipes and restart clock after still image
 	FlushStreams();
 	m_omx->SetClockScale(s_playbackSpeeds[m_direction][m_playbackSpeed]);
-	m_omx->StartClock(m_hasVideo, m_hasAudio,
-			Transferring() ? PRE_ROLL_LIVE : PRE_ROLL_PLAYBACK);
+//	m_omx->StartClock(m_hasVideo, m_hasAudio, Transferring() ? PRE_ROLL_LIVE : PRE_ROLL_PLAYBACK);
 
 	m_mutex->Unlock();
 }

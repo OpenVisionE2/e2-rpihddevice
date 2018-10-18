@@ -20,7 +20,6 @@
 #include "rpisetup.h"
 #include "rpidisplay.h"
 
-#include <vdr/menuitems.h>
 #include <lib/base/eerror.h>
 
 #include <getopt.h>
@@ -31,7 +30,7 @@
 
 /* ------------------------------------------------------------------------- */
 
-class cRpiSetupPage : public cMenuSetupPage
+class cRpiSetupPage
 {
 
 public:
@@ -43,19 +42,19 @@ public:
 		m_audio(audio),
 		m_video(video)
 	{
-		m_audioPort[0] = tr("analog");
-		m_audioPort[1] = tr("HDMI");
+		m_audioPort[0] = "analog";
+		m_audioPort[1] = "HDMI";
 
-		m_audioFormat[0] = tr("pass through");
-		m_audioFormat[1] = tr("multi channel PCM");
-		m_audioFormat[2] = tr("stereo PCM");
+		m_audioFormat[0] = "pass through";
+		m_audioFormat[1] = "multi channel PCM";
+		m_audioFormat[2] = "stereo PCM";
 
-		m_videoFraming[0] = tr("box");
-		m_videoFraming[1] = tr("crop");
-		m_videoFraming[2] = tr("stretch");
+		m_videoFraming[0] = "box";
+		m_videoFraming[1] = "crop";
+		m_videoFraming[2] = "stretch";
 
-		m_videoResolution[0] = tr("default");
-		m_videoResolution[1] = tr("follow video");
+		m_videoResolution[0] = "default";
+		m_videoResolution[1] = "follow video";
 		m_videoResolution[2] = "720x480 (4:3)";
 		m_videoResolution[3] = "720x480 (16:9)";
 		m_videoResolution[4] = "720x576 (4:3)";
@@ -63,8 +62,8 @@ public:
 		m_videoResolution[6] = "1280x720";
 		m_videoResolution[7] = "1920x1080";
 
-		m_videoFrameRate[0] = tr("default");
-		m_videoFrameRate[1] = tr("follow video");
+		m_videoFrameRate[0] = "default";
+		m_videoFrameRate[1] = "follow video";
 		m_videoFrameRate[2] = "24p";
 		m_videoFrameRate[3] = "25p";
 		m_videoFrameRate[4] = "30p";
@@ -73,13 +72,13 @@ public:
 		m_videoFrameRate[7] = "60i";
 		m_videoFrameRate[8] = "60p";
 
-		m_useAdvancedDeinterlacer[0] = trVDR("no");
-		m_useAdvancedDeinterlacer[1] = tr("for SD video only");
-		m_useAdvancedDeinterlacer[2] = tr("always");
+		m_useAdvancedDeinterlacer[0] = "no";
+		m_useAdvancedDeinterlacer[1] = "for SD video only";
+		m_useAdvancedDeinterlacer[2] = "always";
 
-		Setup();
+//		Setup();
 	}
-
+/*
 	eOSState ProcessKey(eKeys Key)
 	{
 		int newAudioPort = m_audio.port;
@@ -119,33 +118,33 @@ private:
 		if (!cRpiDisplay::IsFixedMode())
 		{
 			Add(new cMenuEditStraItem(
-				tr("Resolution"), &m_video.resolution, 8, m_videoResolution));
+				"Resolution", &m_video.resolution, 8, m_videoResolution));
 
 			Add(new cMenuEditStraItem(
-				tr("Frame Rate"), &m_video.frameRate, 9, m_videoFrameRate));
+				"Frame Rate", &m_video.frameRate, 9, m_videoFrameRate));
 		}
 		if (cRpiDisplay::IsProgressive())
 			Add(new cMenuEditStraItem(
-					tr("Use Advanced Deinterlacer"),
+					"Use Advanced Deinterlacer",
 					&m_video.advancedDeinterlacer, 3,
 					m_useAdvancedDeinterlacer));
 
 		Add(new cMenuEditStraItem(
-				tr("Video Framing"), &m_video.framing, 3, m_videoFraming));
+				"Video Framing", &m_video.framing, 3, m_videoFraming));
 
 		Add(new cMenuEditStraItem(
-				tr("Audio Port"), &m_audio.port, 2, m_audioPort));
+				"Audio Port", &m_audio.port, 2, m_audioPort));
 
 		if (m_audio.port == 1)
 		{
-			Add(new cMenuEditStraItem(tr("Digital Audio Format"),
+			Add(new cMenuEditStraItem("Digital Audio Format"),
 					&m_audio.format, 3, m_audioFormat));
 		}
 
 		SetCurrent(Get(current));
 		Display();
 	}
-
+*/
 	cRpiSetup::AudioParameters m_audio;
 	cRpiSetup::VideoParameters m_video;
 
@@ -299,12 +298,12 @@ void cRpiSetup::SetHDMIChannelMapping(bool passthrough, int channels)
 	sprintf(command, "hdmi_channel_map 0x%08x", channel_map);
 	vc_gencmd(response, sizeof(response), command);
 }
-
+/*
 cMenuSetupPage* cRpiSetup::GetSetupPage(void)
 {
 	return new cRpiSetupPage(m_audio, m_video);
 }
-
+*/
 bool cRpiSetup::Parse(const char *name, const char *value)
 {
 	if (!strcasecmp(name, "AudioPort"))

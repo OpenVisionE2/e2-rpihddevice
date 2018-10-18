@@ -23,9 +23,7 @@
 #include "rpidisplay.h"
 #include "rpisetup.h"
 
-#include <vdr/tools.h>
 #include <lib/base/eerror.h>
-#define KILOBYTE(n) ((n) * 1024)
 
 extern "C" {
 #include "ilclient.h"

@@ -22,7 +22,6 @@
 #include "omx.h"
 
 #include <lib/base/eerror.h>
-#define KILOBYTE(n) ((n) * 1024)
 
 extern "C" {
 #include <libavcodec/avcodec.h>

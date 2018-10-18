@@ -21,7 +21,7 @@
 #include "rpidisplay.h"
 
 static const char *VERSION        = "1.0.4";
-static const char *DESCRIPTION    = trNOOP("HD output device for Raspberry Pi");
+static const char *DESCRIPTION    = "HD output device for Raspberry Pi";
 
 class cRpiHdDevice /*: public cPlugin*/
 {
@@ -33,7 +33,7 @@ public:
 	cRpiHdDevice(void);
 	virtual ~cRpiHdDevice();
 	virtual const char *Version(void) { return VERSION; }
-	virtual const char *Description(void) { return tr(DESCRIPTION); }
+	virtual const char *Description(void) { return DESCRIPTION; }
 	virtual const char *CommandLineHelp(void);
 	virtual bool ProcessArgs(int argc, char *argv[]);
 	virtual bool Initialize(void);

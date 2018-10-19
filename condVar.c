@@ -1,14 +1,15 @@
 /*
- * thread.c: A simple thread base class
+ * condVarcpp.c: A simple thread base class
  *
+ * Code from vdr/thread.c
+ * $Id: thread.c 3.2 2013/12/29 15:26:33 kls Exp $
  * See the main source file 'vdr.c' for copyright information and
  * how to reach the author.
  *
- * $Id: thread.c 3.2 2013/12/29 15:26:33 kls Exp $
  */
 
 #include "rpitools.h"
-#include "omxthread.h"
+#include "condVar.h"
 
 #if !defined(max)
 #define max(a, b)       ((a) > (b) ? (a) : (b))

@@ -1,10 +1,11 @@
 /*
- * thread.h: A simple thread base class
+ * condVarcpp.h: A simple thread base class
  *
+ * Code from vdr/thread.c
+ * $Id: thread.h 3.2 2015/01/14 11:39:55 kls Exp $
  * See the main source file 'vdr.c' for copyright information and
  * how to reach the author.
  *
- * $Id: thread.h 3.2 2015/01/14 11:39:55 kls Exp $
  */
 
 #ifndef __THREAD_H

@@ -1,17 +1,16 @@
 #
-# Makefile for a Video Disk Recorder plugin
+# Makefile for a Enigma2 rpihddevice library
 #
 # $Id: Makefile 2.18 2013/01/12 13:45:01 kls Exp $
 
-# The official name of this plugin.
-# This name will be used in the '-P...' option of VDR to load the plugin.
+# The official name of this E2 lib.
 # By default the main source file also carries this name.
 
-PLUGIN = rpihddevice
+E2LIB = rpihddevice
 
-### The version number of this plugin (taken from the main source file):
+### The version number of this lib (taken from the main source file):
 
-VERSION = $(shell grep 'static const char \*VERSION *=' $(PLUGIN).c | awk '{ print $$6 }' | sed -e 's/[";]//g')
+VERSION = $(shell grep 'static const char \*VERSION *=' $(E2LIB).c | awk '{ print $$6 }' | sed -e 's/[";]//g')
 
 ### The directory environment:
 
@@ -28,7 +27,7 @@ TMPDIR ?= /tmp
 export CFLAGS   = $(call PKGCFG,cflags)
 export CXXFLAGS = $(call PKGCFG,cxxflags)
 
-### The version number of VDR's plugin API:
+### The version number of E2's lib API:
 
 APIVERSION = $(call PKGCFG,apiversion)
 
@@ -38,16 +37,16 @@ APIVERSION = $(call PKGCFG,apiversion)
 
 ### The name of the distribution archive:
 
-ARCHIVE = $(PLUGIN)-$(VERSION)
-PACKAGE = vdr-$(ARCHIVE)
+ARCHIVE = $(E2LIB)-$(VERSION)
+PACKAGE = e2-$(ARCHIVE)
 
 ### The name of the shared object file:
 
-SOFILE = e2-$(PLUGIN).so
+SOFILE = e2-$(E2LIB).so
 
 ### Includes and Defines (add further entries here):
 
-DEFINES += -DPLUGIN_NAME_I18N='"$(PLUGIN)"'
+DEFINES += -DPLUGIN_NAME_I18N='"$(E2LIB)"'
 DEFINES += -DHAVE_LIBOPENMAX=2 -DOMX -DOMX_SKIP64BIT -DUSE_EXTERNAL_OMX -DHAVE_LIBBCM_HOST -DUSE_EXTERNAL_LIBBCM_HOST -DUSE_VCHIQ_ARM
 DEFINES += -Wno-psabi -Wno-write-strings -fpermissive
 DEFINES += -D__STL_CONFIG_H
@@ -124,7 +123,7 @@ INCLUDES += $(shell pkg-config --cflags enigma2)
 ### The object files (add further files here):
 
 ILCLIENT = $(ILCDIR)/libilclient.a
-OBJS = $(PLUGIN).o rpitools.o rpisetup.o omx.o rpiaudio.o omxdevice.o rpidisplay.o omxthread.o
+OBJS = $(E2LIB).o rpitools.o rpisetup.o omx.o rpiaudio.o omxdecoder.o rpidisplay.o condVar.o
 
 ### The main target:
 

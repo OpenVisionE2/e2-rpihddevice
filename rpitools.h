@@ -20,6 +20,7 @@
 #ifndef TOOLS_H
 #define TOOLS_H
 
+#include <errno.h>
 #include <math.h>
 #include <poll.h>
 #include <stdarg.h>

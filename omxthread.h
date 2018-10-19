@@ -13,6 +13,7 @@
 #include <pthread.h>
 #include <stdio.h>
 #include <sys/types.h>
+#include <sys/time.h>
 
 class cCondWait {
 private:

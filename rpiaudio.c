@@ -1,5 +1,5 @@
 /*
- * rpihddevice - VDR HD output device for Raspberry Pi
+ * rpihddevice - Enigma2 rpihddevice library for Raspberry Pi
  * Copyright (C) 2014, 2015, 2016 Thomas Reufer
  *
  * This program is free software; you can redistribute it and/or modify
@@ -381,7 +381,7 @@ private:
 	bool				m_parsed;
 
 	/* ---------------------------------------------------------------------- */
-	/*     audio codec parser helper functions, based on vdr-softhddevice     */
+	/*     audio codec parser helper functions, based on e2-rpihddevice       */
 	/* ---------------------------------------------------------------------- */
 
 	static const uint16_t BitRateTable[2][3][16];

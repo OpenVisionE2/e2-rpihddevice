@@ -1,5 +1,5 @@
 /*
- * rpihddevice - VDR HD output device for Raspberry Pi
+ * rpihddevice - Enigma2 rpihddevice library for Raspberry Pi
  * Copyright (C) 2014, 2015, 2016 Thomas Reufer
  *
  * This program is free software; you can redistribute it and/or modify

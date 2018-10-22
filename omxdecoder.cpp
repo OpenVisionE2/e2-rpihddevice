@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-#include "omxdecoder.h"
+#include "omxdecoder.h"	//	#include <lib/dvb/omxdecoder.h>
 #include "omx.h"
 #include "rpiaudio.h"
 #include "rpidisplay.h"

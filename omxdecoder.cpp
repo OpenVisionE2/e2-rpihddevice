@@ -135,7 +135,7 @@ void cOmxDevice::GetOsdSize(int &Width, int &Height, double &PixelAspect)
 {
 	cRpiDisplay::GetSize(Width, Height, PixelAspect);
 }
-
+/*	lib/dvb/decoder.cpp		 int eDVBVideo::readApiSize(int fd, int &xres, int &yres, int &aspect) */
 void cOmxDevice::GetVideoSize(int &Width, int &Height, double &VideoAspect)
 {
 	Height = m_omx->GetVideoFrameFormat()->height;
@@ -146,7 +146,22 @@ void cOmxDevice::GetVideoSize(int &Width, int &Height, double &VideoAspect)
 	else
 		VideoAspect = 1.0;
 }
-/*
+/*	
+int eDVBVideo::readApiSize(int fd, int &xres, int &yres, int &aspect)
+{
+	video_size_t size;
+	xres = m_omx->GetVideoFrameFormat()->width;
+	yres = m_omx->GetVideoFrameFormat()->height;
+	if (xres == (yres * 4)/3 && !((yres * 4) % 3))
+		size.aspect_ratio=0;
+	else if (xres == (yres * 16)/9 && !((yres * 16) % 9))
+		size.aspect_ratio=1;
+	else
+		return -1;
+	aspect = size.aspect_ratio == 0 ? 2 : 3;  // convert dvb api to etsi
+	return 0;
+}
+
 void cOmxDevice::ScaleVideo(const cRect &Rect)
 {
 	eDebug("[cOmxDevice] ScaleVideo(%d, %d, %d, %d)",

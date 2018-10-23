@@ -11,6 +11,7 @@
 #ifndef __THREAD_H
 #define __THREAD_H
 
+#include <errno.h>
 #include <pthread.h>
 #include <stdio.h>
 #include <sys/types.h>

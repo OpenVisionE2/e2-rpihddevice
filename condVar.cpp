@@ -8,7 +8,6 @@
  *
  */
 
-#include "rpitools.h"
 #include "condVar.h"	//	#include <lib/base/condVar.h>
 
 #if !defined(max)

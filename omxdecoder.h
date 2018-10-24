@@ -20,7 +20,7 @@
 #ifndef OMX_DEVICE_H
 #define OMX_DEVICE_H
 
-#include "tools.h"	//	#include <lib/base/tools.h>
+#include <lib/base/tools.h>
 
 #include <lib/base/eerror.h>
 

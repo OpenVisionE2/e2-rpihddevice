@@ -21,7 +21,7 @@
 #define OMX_H
 
 #include <lib/base/condVar.h>
-#include "rpitools.h"
+#include "tools.h"	//	#include <lib/base/tools.h>
 
 extern "C"
 {

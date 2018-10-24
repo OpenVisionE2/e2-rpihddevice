@@ -20,7 +20,7 @@
 #ifndef DISPLAY_H
 #define DISPLAY_H
 
-#include "rpitools.h"
+#include "tools.h"	//	#include <lib/base/tools.h>
 
 class cRpiDisplay
 {

@@ -19,10 +19,31 @@
 
 #ifndef OMX_DEVICE_H
 #define OMX_DEVICE_H
-
 #include <lib/base/tools.h>
-
 #include <lib/base/eerror.h>
+#include <lib/dvb/edvbdemux.h>
+
+//	vdr/device.h
+
+// Note that VDR itself always uses pmAudioVideo when replaying a recording!
+enum ePlayMode { pmNone,           // audio/video from decoder
+                 pmAudioVideo,     // audio/video from player
+                 pmAudioOnly,      // audio only from player, video from decoder
+                 pmAudioOnlyBlack, // audio only from player, no video (black screen)
+                 pmVideoOnly,      // video only from player, audio from decoder
+                 pmExtern_THIS_SHOULD_BE_AVOIDED
+                 // external player (e.g. MPlayer), release the device
+                 // WARNING: USE THIS MODE ONLY AS A LAST RESORT, IF YOU
+                 // ABSOLUTELY, POSITIVELY CAN'T IMPLEMENT YOUR PLAYER
+                 // THE WAY IT IS SUPPOSED TO WORK. FORCING THE DEVICE
+                 // TO RELEASE ITS FILES HANDLES (OR WHATEVER RESOURCES
+                 // IT MAY USE) TO ALLOW AN EXTERNAL PLAYER TO ACCESS
+                 // THEM MEANS THAT SUCH A PLAYER WILL NEED TO HAVE
+                 // DETAILED KNOWLEDGE ABOUT THE INTERNALS OF THE DEVICE
+                 // IN USE. AS A CONSEQUENCE, YOUR PLAYER MAY NOT WORK
+                 // IF A PARTICULAR VDR INSTALLATION USES A DEVICE NOT
+                 // KNOWN TO YOUR PLAYER.
+               };
 
 class cOmx;
 class cRpiAudioDecoder;

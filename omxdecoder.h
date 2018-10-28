@@ -19,6 +19,8 @@
 
 #ifndef OMX_DEVICE_H
 #define OMX_DEVICE_H
+
+#include <python2.7/Python.h>
 #include <lib/base/tools.h>
 #include <lib/base/eerror.h>
 #include <lib/dvb/edvbdemux.h>

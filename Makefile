@@ -56,11 +56,10 @@ CXXFLAGS += -D__STDC_CONSTANT_MACROS
 ILCDIR   =ilclient
 VCINCDIR =$(SDKSTAGE)/usr/include
 VCLIBDIR =$(SDKSTAGE)/usr/lib
-E2INCDIR =$(E2STAGE)
 SIGC2LIBDIR =/usr/include/sigc++-2.0
 SIGC2LIBDIR2 =/usr/lib/arm-linux-gnueabihf/sigc++-2.0/include
 
-INCLUDES += -I$(ILCDIR) -I$(VCINCDIR) -I$(E2INCDIR) -I$(VCINCDIR)/interface/vcos/pthreads 
+INCLUDES += -I$(ILCDIR) -I$(VCINCDIR) -I$(VCINCDIR)/interface/vcos/pthreads 
 INCLUDES += -I$(VCINCDIR)/interface/vmcs_host/linux -I$(SIGC2LIBDIR) -I$(SIGC2LIBDIR2)
 
 LDLIBS  += -lbcm_host -lvcos -lvchiq_arm -lopenmaxil -lGLESv2 -lEGL -lpthread -lrt
@@ -117,6 +116,9 @@ endif
 
 LDLIBS   += $(shell pkg-config --libs freetype2)
 INCLUDES += $(shell pkg-config --cflags freetype2)
+
+LDLIBS   += $(shell pkg-config --libs enigma2)
+INCLUDES += $(shell pkg-config --cflags enigma2)
 
 ### The object files (add further files here):
 

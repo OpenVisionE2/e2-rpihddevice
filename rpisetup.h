@@ -20,7 +20,7 @@
 #ifndef SETUP_H
 #define SETUP_H
 
-#include "omx.h"
+#include <lib/gdi/omx.h>
 
 #define VC_DISPLAY_DEFAULT     0
 #define VC_DISPLAY_LCD         4

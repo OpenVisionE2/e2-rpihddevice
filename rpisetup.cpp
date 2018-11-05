@@ -20,7 +20,7 @@
 #include "rpisetup.h"
 #include "rpidisplay.h"
 
-#include "eerror.h"
+#include <lib/base/eerror.h>
 
 #include <getopt.h>
 

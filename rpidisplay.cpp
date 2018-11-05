@@ -20,7 +20,7 @@
 #include "rpidisplay.h"
 #include "rpisetup.h"
 
-#include <lib/base/eerror.h>
+#include "eerror.h"
 
 extern "C" {
 #include "interface/vmcs_host/vc_tvservice.h"

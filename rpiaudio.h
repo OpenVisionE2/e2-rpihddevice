@@ -20,7 +20,7 @@
 #ifndef AUDIO_H
 #define AUDIO_H
 
-#include <lib/gdi/omx.h>
+#include "omx.h"
 
 class cRpiAudioRender;
 

@@ -19,9 +19,9 @@
 
 #include "rpiaudio.h"
 #include "rpisetup.h"
-#include <lib/gdi/omx.h>
+#include "omx.h"
 
-#include <lib/base/eerror.h>
+#include "eerror.h"
 
 extern "C" {
 #include <libavcodec/avcodec.h>

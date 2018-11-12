@@ -22,7 +22,7 @@
 
 #include "tools.h"
 #include <lib/base/eerror.h>
-#include "edvbdemux.h"
+#include <lib/base/edvbdemux.h>
 
 //	vdr/device.h
 

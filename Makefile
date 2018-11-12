@@ -123,7 +123,8 @@ INCLUDES += $(shell pkg-config --cflags enigma2)
 ### The object files (add further files here):
 
 ILCLIENT = $(ILCDIR)/libilclient.a
-OBJS = $(E2LIB).o rpisetup.o omx.o rpiaudio.o omxdecoder.o rpidisplay.o
+#OBJS = $(E2LIB).o rpisetup.o omx.o rpiaudio.o omxdecoder.o rpidisplay.o
+OBJS = $(E2LIB).o omx.o
 
 ### The main target:
 

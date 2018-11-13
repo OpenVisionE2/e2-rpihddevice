@@ -10,30 +10,27 @@ E2LIB = rpihddevice
 
 ### The version number of this lib (taken from the main source file):
 
-VERSION = $(shell grep 'static const char \*VERSION *=' $(E2LIB).cpp | awk '{ print $$6 }' | sed -e 's/[";]//g')
+VERSION = 1.0.4
 
 ### The directory environment:
 
-# Use package data if installed...otherwise assume we're under the VDR source directory:
-#PKGCFG = $(if $(VDRDIR),$(shell pkg-config --variable=$(1) $(VDRDIR)/vdr.pc),$(shell PKG_CONFIG_PATH="$$PKG_CONFIG_PATH:../../.." pkg-config --variable=$(1) vdr))
-LIBDIR = $(call PKGCFG,libdir)
-LOCDIR = $(call PKGCFG,locdir)
-PLGCFG = $(call PKGCFG,plgcfg)
+LIBDIR = /usr/local/lib
+LOCDIR = /usr/local/share/locale
+#PLGCFG = $(call PKGCFG,plgcfg)
 #
 TMPDIR ?= /tmp
 
 ### The compiler options:
 
-export CFLAGS   = $(call PKGCFG,cflags)
-export CXXFLAGS = $(call PKGCFG,cxxflags)
+export CFLAGS   = $(CFLAGS) $(CDEFINES) $(CINCLUDES) $(HDRDIR)
+export CXXFLAGS = $(CXXFLAGS) $(CDEFINES) $(CINCLUDES) $(HDRDIR)
 
 ### The version number of E2's lib API:
 
-APIVERSION = $(call PKGCFG,apiversion)
+APIVERSION = 6.2
 
 ### Allow user defined options to overwrite defaults:
-
--include $(PLGCFG)
+#-include $(PLGCFG)
 
 ### The name of the distribution archive:
 
@@ -65,7 +62,7 @@ INCLUDES += -I$(VCINCDIR)/interface/vmcs_host/linux -I$(SIGC2LIBDIR) -I$(SIGC2LI
 LDLIBS  += -lbcm_host -lvcos -lvchiq_arm -lopenmaxil -lGLESv2 -lEGL -lpthread -lrt
 LDLIBS  += -Wl,--whole-archive $(ILCDIR)/libilclient.a -Wl,--no-whole-archive
 LDFLAGS += -L$(VCLIBDIR)
-# LDFLAGS += -L$(VCLIBDIR) -lbcm_host -lvcos -lvchiq_arm -lopenmaxil -lGLESv2 -lEGL -lpthread -lrt -lavcodec -lavformat -lswresample
+#LDFLAGS += -L$(VCLIBDIR) -lbcm_host -lvcos -lvchiq_arm -lopenmaxil -lGLESv2 -lEGL -lpthread -lrt -lavcodec -lavformat -lswresample
 
 DEBUG ?= 0
 ifeq ($(DEBUG), 1)

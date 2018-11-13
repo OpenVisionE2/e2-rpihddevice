@@ -22,14 +22,20 @@ TMPDIR ?= /tmp
 
 ### The compiler options:
 
-export CFLAGS   = $(CFLAGS) $(CDEFINES) $(CINCLUDES) $(HDRDIR)
-export CXXFLAGS = $(CXXFLAGS) $(CDEFINES) $(CINCLUDES) $(HDRDIR)
+CFLAGS   ?= -g -O3 -Wall
+CXXFLAGS ?= -g -O3 -Wall -Werror=overloaded-virtual -Wno-parentheses
+CDEFINES  = -D_GNU_SOURCE
+CDEFINES += -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE
+
+#export CFLAGS   = $(CFLAGS) $(CDEFINES) $(CINCLUDES) $(HDRDIR)
+#export CXXFLAGS = $(CXXFLAGS) $(CDEFINES) $(CINCLUDES) $(HDRDIR)
 
 ### The version number of E2's lib API:
 
 APIVERSION = 6.2
 
 ### Allow user defined options to overwrite defaults:
+
 #-include $(PLGCFG)
 
 ### The name of the distribution archive:
@@ -48,7 +54,8 @@ DEFINES += -DHAVE_LIBOPENMAX=2 -DOMX -DOMX_SKIP64BIT -DUSE_EXTERNAL_OMX -DHAVE_L
 DEFINES += -Wno-psabi -Wno-write-strings -fpermissive
 DEFINES += -D__STL_CONFIG_H
 
-CXXFLAGS += -D__STDC_CONSTANT_MACROS -fPIC
+CFLAGS   += $(CDEFINES) -fPIC
+CXXFLAGS += $(CDEFINES) -D__STDC_CONSTANT_MACROS -fPIC
 
 ILCDIR   =ilclient
 VCINCDIR =$(SDKSTAGE)/usr/include

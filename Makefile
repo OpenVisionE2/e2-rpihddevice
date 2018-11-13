@@ -51,7 +51,7 @@ DEFINES += -DHAVE_LIBOPENMAX=2 -DOMX -DOMX_SKIP64BIT -DUSE_EXTERNAL_OMX -DHAVE_L
 DEFINES += -Wno-psabi -Wno-write-strings -fpermissive
 DEFINES += -D__STL_CONFIG_H
 
-CXXFLAGS += -D__STDC_CONSTANT_MACROS
+CXXFLAGS += -D__STDC_CONSTANT_MACROS -fPIC
 
 ILCDIR   =ilclient
 VCINCDIR =$(SDKSTAGE)/usr/include
@@ -117,8 +117,8 @@ endif
 LDLIBS   += $(shell pkg-config --libs freetype2)
 INCLUDES += $(shell pkg-config --cflags freetype2)
 
-LDLIBS   += $(shell pkg-config --libs enigma2)
-INCLUDES += $(shell pkg-config --cflags enigma2)
+#LDLIBS   += $(shell pkg-config --libs enigma2)
+#INCLUDES += $(shell pkg-config --cflags enigma2)
 
 ### The object files (add further files here):
 

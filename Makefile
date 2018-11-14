@@ -15,9 +15,6 @@ VERSION = 1.0.4
 ### The directory environment:
 
 LIBDIR = /usr/lib
-#LOCDIR = /usr/local/share/locale
-#PLGCFG = $(call PKGCFG,plgcfg)
-#
 TMPDIR ?= /tmp
 
 ### The compiler options:
@@ -26,17 +23,6 @@ CFLAGS   ?= -g -O3 -Wall
 CXXFLAGS ?= -g -O3 -Wall -Werror=overloaded-virtual -Wno-parentheses
 CDEFINES  = -D_GNU_SOURCE
 CDEFINES += -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE
-
-#export CFLAGS   = $(CFLAGS) $(CDEFINES) $(CINCLUDES) $(HDRDIR)
-#export CXXFLAGS = $(CXXFLAGS) $(CDEFINES) $(CINCLUDES) $(HDRDIR)
-
-### The version number of E2's lib API:
-
-#APIVERSION = 6.2
-
-### Allow user defined options to overwrite defaults:
-
-#-include $(PLGCFG)
 
 ### The name of the distribution archive:
 
@@ -160,7 +146,8 @@ $(ILCLIENT):
 
 install-lib: $(SOFILE)
 	install -D $^ $(DESTDIR)$(LIBDIR)/$^.$(VERSION)
-
+	ln -s $(DESTDIR)$(LIBDIR)/$(SOFILE).$(VERSION) $(DESTDIR)$(LIBDIR)/$(SOFILE)
+	
 install: install-lib
 
 dist: $(I18Npo) clean

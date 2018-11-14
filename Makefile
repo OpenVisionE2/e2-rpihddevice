@@ -9,8 +9,9 @@
 E2LIB = rpihddevice
 
 ### The version number of this lib (taken from the main source file):
-
-VERSION = 1.0.4
+MAJOR = 1
+MINOR = 0.4
+VERSION = $(MAJOR).$(MINOR)
 
 ### The directory environment:
 
@@ -139,7 +140,7 @@ $(DEPFILE): Makefile
 ### Targets:
 
 $(SOFILE): $(ILCLIENT) $(OBJS)
-	$(CXX) $(CXXFLAGS) $(LDFLAGS) -shared $(OBJS) $(LDLIBS) -o $@
+	$(CXX) $(CXXFLAGS) $(LDFLAGS) -shared $(OBJS) $(LDLIBS) -Wl,-soname,$(SOFILE).$(MAJOR) -o $@
 
 $(ILCLIENT):
 	$(MAKE) --no-print-directory -C $(ILCDIR) all

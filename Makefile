@@ -15,7 +15,7 @@ VERSION = 1.0.4
 ### The directory environment:
 
 LIBDIR = /usr/lib
-TMPDIR ?= /tmp
+LOCDIR = /usr/share
 
 ### The compiler options:
 
@@ -148,14 +148,15 @@ install-lib: $(SOFILE)
 	install -D $^ $(DESTDIR)$(LIBDIR)/$^.$(VERSION)
 	ln -s $(DESTDIR)$(LIBDIR)/$^.$(VERSION) $(DESTDIR)$(LIBDIR)/$^
 	
+	
 install: install-lib
 
 dist: $(I18Npo) clean
-	@-rm -rf $(TMPDIR)/$(ARCHIVE)
-	@mkdir $(TMPDIR)/$(ARCHIVE)
-	@cp -a * $(TMPDIR)/$(ARCHIVE)
-	@tar czf $(PACKAGE).tgz -C $(TMPDIR) $(ARCHIVE)
-	@-rm -rf $(TMPDIR)/$(ARCHIVE)
+	@-rm -rf $(DESTDIR)$(LOCDIR)/$(ARCHIVE)
+	@mkdir $(DESTDIR)$(LOCDIR)/$(ARCHIVE)
+	@cp -a * $(DESTDIR)$(LOCDIR)/$(ARCHIVE)
+	@tar czf $(PACKAGE).tgz -C $(DESTDIR)$(LOCDIR) $(ARCHIVE)
+	@-rm -rf $(DESTDIR)$(LOCDIR)/$(ARCHIVE)
 	@echo Distribution package created as $(PACKAGE).tgz
 
 clean:

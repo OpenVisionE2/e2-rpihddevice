@@ -146,7 +146,7 @@ $(ILCLIENT):
 
 install-lib: $(SOFILE)
 	install -D $^ $(DESTDIR)$(LIBDIR)/$^.$(VERSION)
-	ln -s $(DESTDIR)$(LIBDIR)/$(SOFILE).$(VERSION) $(DESTDIR)$(LIBDIR)/$(SOFILE)
+	ln -s $(DESTDIR)$(LIBDIR)/$^.$(VERSION) $(DESTDIR)$(LIBDIR)/$^
 	
 install: install-lib
 

@@ -14,8 +14,8 @@ VERSION = 1.0.4
 
 ### The directory environment:
 
-LIBDIR = /usr/local/lib
-LOCDIR = /usr/local/share/locale
+LIBDIR = /usr/lib
+#LOCDIR = /usr/local/share/locale
 #PLGCFG = $(call PKGCFG,plgcfg)
 #
 TMPDIR ?= /tmp
@@ -32,7 +32,7 @@ CDEFINES += -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE
 
 ### The version number of E2's lib API:
 
-APIVERSION = 6.2
+#APIVERSION = 6.2
 
 ### Allow user defined options to overwrite defaults:
 
@@ -45,7 +45,7 @@ PACKAGE = e2-$(ARCHIVE)
 
 ### The name of the shared object file:
 
-SOFILE = e2-$(E2LIB).so
+SOFILE = lib$(E2LIB).so
 
 ### Includes and Defines (add further entries here):
 
@@ -60,11 +60,13 @@ CXXFLAGS += $(CDEFINES) -D__STDC_CONSTANT_MACROS -fPIC
 ILCDIR   =ilclient
 VCINCDIR =$(SDKSTAGE)/usr/include
 VCLIBDIR =$(SDKSTAGE)/usr/lib
-SIGC2LIBDIR =/usr/include/sigc++-2.0
-SIGC2LIBDIR2 =/usr/lib/arm-linux-gnueabihf/sigc++-2.0/include
+#SIGC2LIBDIR =/usr/include/sigc++-2.0
+#SIGC2LIBDIR2 =/usr/lib/arm-linux-gnueabihf/sigc++-2.0/include
 
-INCLUDES += -I$(ILCDIR) -I$(VCINCDIR) -I$(VCINCDIR)/interface/vcos/pthreads 
-INCLUDES += -I$(VCINCDIR)/interface/vmcs_host/linux -I$(SIGC2LIBDIR) -I$(SIGC2LIBDIR2)
+INCLUDES += -I$(ILCDIR) -I$(VCINCDIR) -I$(VCINCDIR)/interface/vcos/pthreads
+INCLUDES += -I$(VCINCDIR)/interface/vmcs_host/linux 
+#INCLUDES += -I$(SIGC2LIBDIR) -I$(SIGC2LIBDIR2)
+
 
 LDLIBS  += -lbcm_host -lvcos -lvchiq_arm -lopenmaxil -lGLESv2 -lEGL -lpthread -lrt
 LDLIBS  += -Wl,--whole-archive $(ILCDIR)/libilclient.a -Wl,--no-whole-archive
@@ -157,7 +159,7 @@ $(ILCLIENT):
 	$(MAKE) --no-print-directory -C $(ILCDIR) all
 
 install-lib: $(SOFILE)
-	install -D $^ $(DESTDIR)$(LIBDIR)/$^.$(APIVERSION)
+	install -D $^ $(DESTDIR)$(LIBDIR)/$^.$(VERSION)
 
 install: install-lib
 

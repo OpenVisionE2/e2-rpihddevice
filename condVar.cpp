@@ -8,7 +8,7 @@
  *
  */
 
-#include <lib/base/condVar.h>
+#include "condVar.h"
 
 #if !defined(max)
 #define max(a, b)       ((a) > (b) ? (a) : (b))

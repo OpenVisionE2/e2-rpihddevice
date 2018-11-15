@@ -148,6 +148,7 @@ $(ILCLIENT):
 install-lib: $(SOFILE)
 	install -D $^ $(DESTDIR)$(LIBDIR)/$^.$(VERSION)
 	ln -s -r $(DESTDIR)$(LIBDIR)/$^.$(VERSION) $(DESTDIR)$(LIBDIR)/$^
+	mkdir $(DESTDIR)$(INCDIR)
 	cp *.h $(DESTDIR)$(INCDIR)/ 
 
 

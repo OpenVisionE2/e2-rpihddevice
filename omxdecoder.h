@@ -21,8 +21,8 @@
 #define OMX_DEVICE_H
 
 #include "tools.h"
-#include <lib/base/eerror.h>
-#include <lib/base/edvbdemux.h>
+#include <syslog.h>
+//#include <lib/base/edvbdemux.h>
 
 //	vdr/device.h
 

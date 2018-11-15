@@ -17,6 +17,7 @@ VERSION = $(MAJOR).$(MINOR)
 
 LIBDIR = /usr/lib
 LOCDIR = /usr/share
+INCDIR = /usr/include
 
 ### The compiler options:
 
@@ -53,7 +54,6 @@ VCLIBDIR =$(SDKSTAGE)/usr/lib
 INCLUDES += -I$(ILCDIR) -I$(VCINCDIR) -I$(VCINCDIR)/interface/vcos/pthreads
 INCLUDES += -I$(VCINCDIR)/interface/vmcs_host/linux 
 #INCLUDES += -I$(SIGC2LIBDIR) -I$(SIGC2LIBDIR2)
-
 
 LDLIBS  += -lbcm_host -lvcos -lvchiq_arm -lopenmaxil -lGLESv2 -lEGL -lpthread -lrt
 LDLIBS  += -Wl,--whole-archive $(ILCDIR)/libilclient.a -Wl,--no-whole-archive
@@ -117,7 +117,7 @@ INCLUDES += $(shell pkg-config --cflags freetype2)
 
 ILCLIENT = $(ILCDIR)/libilclient.a
 #OBJS = $(E2LIB).o rpisetup.o omx.o rpiaudio.o omxdecoder.o rpidisplay.o
-OBJS = omx.o
+OBJS = omx.o condVar.o
 
 ### The main target:
 
@@ -148,8 +148,9 @@ $(ILCLIENT):
 install-lib: $(SOFILE)
 	install -D $^ $(DESTDIR)$(LIBDIR)/$^.$(VERSION)
 	ln -s -r $(DESTDIR)$(LIBDIR)/$^.$(VERSION) $(DESTDIR)$(LIBDIR)/$^
-	
-	
+	cp *.h $(DESTDIR)$(INCDIR)/ 
+
+
 install: install-lib
 
 dist: $(I18Npo) clean

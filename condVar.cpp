@@ -229,7 +229,7 @@ void *cThread::StartThread(cThread *Thread)
      }
   Thread->Action();
   if (Thread->description)
-     dsyslog("%s thread ended (pid=%d, tid=%d)", Thread->description, getpid(), Thread->childThreadId);
+     syslog(LOG_DEBUG, "cThread: %s thread ended (pid=%d, tid=%d)", Thread->description, getpid(), Thread->childThreadId);
   Thread->running = false;
   Thread->active = false;
   return NULL;

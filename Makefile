@@ -9,31 +9,22 @@
 E2LIB = rpihddevice
 
 ### The version number of this lib (taken from the main source file):
-
-VERSION = $(shell grep 'static const char \*VERSION *=' $(E2LIB).cpp | awk '{ print $$6 }' | sed -e 's/[";]//g')
+MAJOR = 1
+MINOR = 0.4
+VERSION = $(MAJOR).$(MINOR)
 
 ### The directory environment:
 
-# Use package data if installed...otherwise assume we're under the VDR source directory:
-PKGCFG = $(if $(VDRDIR),$(shell pkg-config --variable=$(1) $(VDRDIR)/vdr.pc),$(shell PKG_CONFIG_PATH="$$PKG_CONFIG_PATH:../../.." pkg-config --variable=$(1) vdr))
-LIBDIR = $(call PKGCFG,libdir)
-LOCDIR = $(call PKGCFG,locdir)
-PLGCFG = $(call PKGCFG,plgcfg)
-#
-TMPDIR ?= /tmp
+LIBDIR = /usr/lib
+LOCDIR = /usr/share
+INCDIR = /usr/include
 
 ### The compiler options:
 
-export CFLAGS   = $(call PKGCFG,cflags)
-export CXXFLAGS = $(call PKGCFG,cxxflags)
-
-### The version number of E2's lib API:
-
-APIVERSION = $(call PKGCFG,apiversion)
-
-### Allow user defined options to overwrite defaults:
-
--include $(PLGCFG)
+CFLAGS   ?= -g -O3 -Wall
+CXXFLAGS ?= -g -O3 -Wall -Werror=overloaded-virtual -Wno-parentheses
+CDEFINES  = -D_GNU_SOURCE
+CDEFINES += -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE
 
 ### The name of the distribution archive:
 
@@ -42,7 +33,7 @@ PACKAGE = e2-$(ARCHIVE)
 
 ### The name of the shared object file:
 
-SOFILE = e2-$(E2LIB).so
+SOFILE = lib$(E2LIB).so
 
 ### Includes and Defines (add further entries here):
 
@@ -51,21 +42,23 @@ DEFINES += -DHAVE_LIBOPENMAX=2 -DOMX -DOMX_SKIP64BIT -DUSE_EXTERNAL_OMX -DHAVE_L
 DEFINES += -Wno-psabi -Wno-write-strings -fpermissive
 DEFINES += -D__STL_CONFIG_H
 
-CXXFLAGS += -D__STDC_CONSTANT_MACROS
+CFLAGS   += $(CDEFINES) -fPIC
+CXXFLAGS += $(CDEFINES) -D__STDC_CONSTANT_MACROS -fPIC
 
 ILCDIR   =ilclient
 VCINCDIR =$(SDKSTAGE)/usr/include
 VCLIBDIR =$(SDKSTAGE)/usr/lib
-SIGC2LIBDIR =/usr/include/sigc++-2.0
-SIGC2LIBDIR2 =/usr/lib/arm-linux-gnueabihf/sigc++-2.0/include
+#SIGC2LIBDIR =/usr/include/sigc++-2.0
+#SIGC2LIBDIR2 =/usr/lib/arm-linux-gnueabihf/sigc++-2.0/include
 
-INCLUDES += -I$(ILCDIR) -I$(VCINCDIR) -I$(VCINCDIR)/interface/vcos/pthreads 
-INCLUDES += -I$(VCINCDIR)/interface/vmcs_host/linux -I$(SIGC2LIBDIR) -I$(SIGC2LIBDIR2)
+INCLUDES += -I$(ILCDIR) -I$(VCINCDIR) -I$(VCINCDIR)/interface/vcos/pthreads
+INCLUDES += -I$(VCINCDIR)/interface/vmcs_host/linux 
+#INCLUDES += -I$(SIGC2LIBDIR) -I$(SIGC2LIBDIR2)
 
 LDLIBS  += -lbcm_host -lvcos -lvchiq_arm -lopenmaxil -lGLESv2 -lEGL -lpthread -lrt
 LDLIBS  += -Wl,--whole-archive $(ILCDIR)/libilclient.a -Wl,--no-whole-archive
 LDFLAGS += -L$(VCLIBDIR)
-# LDFLAGS += -L$(VCLIBDIR) -lbcm_host -lvcos -lvchiq_arm -lopenmaxil -lGLESv2 -lEGL -lpthread -lrt -lavcodec -lavformat -lswresample
+#LDFLAGS += -L$(VCLIBDIR) -lbcm_host -lvcos -lvchiq_arm -lopenmaxil -lGLESv2 -lEGL -lpthread -lrt -lavcodec -lavformat -lswresample
 
 DEBUG ?= 0
 ifeq ($(DEBUG), 1)
@@ -117,13 +110,14 @@ endif
 LDLIBS   += $(shell pkg-config --libs freetype2)
 INCLUDES += $(shell pkg-config --cflags freetype2)
 
-LDLIBS   += $(shell pkg-config --libs enigma2)
-INCLUDES += $(shell pkg-config --cflags enigma2)
+#LDLIBS   += $(shell pkg-config --libs enigma2)
+#INCLUDES += $(shell pkg-config --cflags enigma2)
 
 ### The object files (add further files here):
 
 ILCLIENT = $(ILCDIR)/libilclient.a
-OBJS = $(E2LIB).o rpisetup.o omx.o rpiaudio.o omxdecoder.o rpidisplay.o
+#OBJS = $(E2LIB).o rpisetup.o omx.o rpiaudio.o omxdecoder.o rpidisplay.o
+OBJS = rpisetup.o omx.o rpiaudio.o rpidisplay.o condVar.o tools.o
 
 ### The main target:
 
@@ -146,22 +140,28 @@ $(DEPFILE): Makefile
 ### Targets:
 
 $(SOFILE): $(ILCLIENT) $(OBJS)
-	$(CXX) $(CXXFLAGS) $(LDFLAGS) -shared $(OBJS) $(LDLIBS) -o $@
+	$(CXX) $(CXXFLAGS) $(LDFLAGS) -shared $(OBJS) $(LDLIBS) -Wl,-soname,$(SOFILE).$(MAJOR) -o $@
 
 $(ILCLIENT):
 	$(MAKE) --no-print-directory -C $(ILCDIR) all
 
 install-lib: $(SOFILE)
-	install -D $^ $(DESTDIR)$(LIBDIR)/$^.$(APIVERSION)
+	install -D $^ $(DESTDIR)$(LIBDIR)/$^.$(VERSION)
+	install -D $(ILCLIENT) $(DESTDIR)$(LIBDIR)
+	ln -s -r $(DESTDIR)$(LIBDIR)/$^.$(VERSION) $(DESTDIR)$(LIBDIR)/$^
+	mkdir $(DESTDIR)$(INCDIR)
+	cp *.h $(DESTDIR)$(INCDIR)/
+	cp $(ILCDIR)/*.h $(DESTDIR)$(INCDIR)/
+
 
 install: install-lib
 
 dist: $(I18Npo) clean
-	@-rm -rf $(TMPDIR)/$(ARCHIVE)
-	@mkdir $(TMPDIR)/$(ARCHIVE)
-	@cp -a * $(TMPDIR)/$(ARCHIVE)
-	@tar czf $(PACKAGE).tgz -C $(TMPDIR) $(ARCHIVE)
-	@-rm -rf $(TMPDIR)/$(ARCHIVE)
+	@-rm -rf $(DESTDIR)$(LOCDIR)/$(ARCHIVE)
+	@mkdir $(DESTDIR)$(LOCDIR)/$(ARCHIVE)
+	@cp -a * $(DESTDIR)$(LOCDIR)/$(ARCHIVE)
+	@tar czf $(PACKAGE).tgz -C $(DESTDIR)$(LOCDIR) $(ARCHIVE)
+	@-rm -rf $(DESTDIR)$(LOCDIR)/$(ARCHIVE)
 	@echo Distribution package created as $(PACKAGE).tgz
 
 clean:

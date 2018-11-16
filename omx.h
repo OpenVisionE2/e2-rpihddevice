@@ -20,8 +20,8 @@
 #ifndef OMX_H
 #define OMX_H
 
-#include <lib/base/condVar.h>
-#include <lib/base/tools.h>
+#include "condVar.h"
+#include "tools.h"
 
 extern "C"
 {

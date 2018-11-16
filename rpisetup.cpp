@@ -20,7 +20,7 @@
 #include "rpisetup.h"
 #include "rpidisplay.h"
 
-#include <lib/base/eerror.h>
+#include <syslog.h>
 
 #include <getopt.h>
 
@@ -197,10 +197,10 @@ bool cRpiSetup::HwInit(void)
 	int width, height;
 	if (!cRpiDisplay::GetSize(width, height))
 	{
-		eLog(2, "[cRpiSetup] HwInit() done, display size is %dx%d", width, height);
+		syslog(LOG_INFO, "[cRpiSetup] HwInit() done, display size is %dx%d", width, height);
 	}
 	else
-		eLog(1, "[cRpiSetup] failed to get video port information!");
+		syslog(LOG_ERR, "[cRpiSetup] failed to get video port information!");
 
 	return true;
 }
@@ -369,7 +369,7 @@ bool cRpiSetup::ProcessArgs(int argc, char *argv[])
 				m_plugin.display = d;
 				break;
 			default:
-				eLog(1, "[cRpiSetup] invalid device id (%d), using default display!", d);
+				syslog(LOG_ERR, "[cRpiSetup] invalid device id (%d), using default display!", d);
 				break;
 			}
 		}
@@ -378,7 +378,7 @@ bool cRpiSetup::ProcessArgs(int argc, char *argv[])
 			return false;
 		}
 	}
-	eDebug("[cRpiSetup] dispmanx layers: video=%d, display=%d",
+	syslog(LOG_DEBUG, "[cRpiSetup] dispmanx layers: video=%d, display=%d",
 			m_plugin.videoLayer, m_plugin.display);
 
 	return true;

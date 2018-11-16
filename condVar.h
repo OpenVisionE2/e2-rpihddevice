@@ -16,6 +16,9 @@
 #include <stdio.h>
 #include <sys/types.h>
 #include <sys/time.h>
+#include <syslog.h>
+
+#define LOG_ERROR         syslog(LOG_ERR, "ERROR (%s,%d): %m", __FILE__, __LINE__)
 
 class cCondWait {
 private:

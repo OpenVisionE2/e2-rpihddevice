@@ -9,7 +9,6 @@
  */
 
 #include "condVar.h"
-
 #include <linux/unistd.h>
 #include <malloc.h>
 #include <stdarg.h>
@@ -19,6 +18,7 @@
 #include <sys/wait.h>
 #include <sys/prctl.h>
 #include <unistd.h>
+#include "tools.h"
 
 #if !defined(max)
 #define max(a, b)       ((a) > (b) ? (a) : (b))

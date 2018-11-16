@@ -1189,8 +1189,6 @@ cRpiAudioDecoder::~cRpiAudioDecoder()
 	delete m_wait;
 }
 
-extern int SysLogLevel;
-
 int cRpiAudioDecoder::Init(void)
 {
 	int ret = m_parser->Init();
@@ -1198,11 +1196,6 @@ int cRpiAudioDecoder::Init(void)
 		return ret;
 
 	avcodec_register_all();
-
-	av_log_set_level(
-			SysLogLevel > 2 ? AV_LOG_VERBOSE :
-			SysLogLevel > 1 ? AV_LOG_INFO : AV_LOG_ERROR);
-	av_log_set_callback(&Log);
 
 	m_codecs[cAudioCodec::ePCM     ].codec = NULL;
 	m_codecs[cAudioCodec::eMPG     ].codec = avcodec_find_decoder(AV_CODEC_ID_MP3);

@@ -98,7 +98,25 @@ uint64_t cTimeMs::Elapsed(void) const
   return Now() - begin;
 }
 
-// ------------------------------------------------------------------
+
+// --- cString ---------------------------------------------------------------
+
+cString::~cString()
+{
+  free(s);
+}
+
+cString cString::vsprintf(const char *fmt, va_list &ap)
+{
+  char *buffer;
+  if (!fmt || vasprintf(&buffer, fmt, ap) < 0) {
+     syslog(LOG_ERR, "[cString:] error in vasprintf('%s', ...)", fmt);
+     buffer = strdup("???");
+     }
+  return cString(buffer, true);
+}
+
+// --- cRational -------------------------------------------------------------
 
 cRational::cRational(double d) :
 	num(0), den(0)

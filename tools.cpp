@@ -101,6 +101,11 @@ uint64_t cTimeMs::Elapsed(void) const
 
 // --- cString ---------------------------------------------------------------
 
+cString::cString(const char *S, bool TakePointer)
+{
+  s = TakePointer ? (char *)S : S ? strdup(S) : NULL;
+}
+
 cString::~cString()
 {
   free(s);

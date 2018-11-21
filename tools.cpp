@@ -25,6 +25,14 @@
 #include "tools.h"
 #include <algorithm>
 
+extern "C" {
+#ifdef boolean
+#define HAVE_BOOLEAN
+#endif
+#include <jpeglib.h>
+#undef boolean
+}
+
 /*
  * ffmpeg's implementation for rational numbers:
  * https://github.com/FFmpeg/FFmpeg/blob/master/libavutil/rational.c
@@ -119,6 +127,104 @@ cString cString::vsprintf(const char *fmt, va_list &ap)
      buffer = strdup("???");
      }
   return cString(buffer, true);
+}
+
+// --- RgbToJpeg -------------------------------------------------------------
+
+#define JPEGCOMPRESSMEM 500000
+
+struct tJpegCompressData {
+  int size;
+  uchar *mem;
+  };
+
+static void JpegCompressInitDestination(j_compress_ptr cinfo)
+{
+  tJpegCompressData *jcd = (tJpegCompressData *)cinfo->client_data;
+  if (jcd) {
+     cinfo->dest->free_in_buffer = jcd->size = JPEGCOMPRESSMEM;
+     cinfo->dest->next_output_byte = jcd->mem = MALLOC(uchar, jcd->size);
+     }
+}
+
+static boolean JpegCompressEmptyOutputBuffer(j_compress_ptr cinfo)
+{
+  tJpegCompressData *jcd = (tJpegCompressData *)cinfo->client_data;
+  if (jcd) {
+     int Used = jcd->size;
+     int NewSize = jcd->size + JPEGCOMPRESSMEM;
+     if (uchar *NewBuffer = (uchar *)realloc(jcd->mem, NewSize)) {
+        jcd->size = NewSize;
+        jcd->mem = NewBuffer;
+        }
+     else {
+        syslog(LOG_ERR, "ERROR: out of memory");
+        return false;
+        }
+     if (jcd->mem) {
+        cinfo->dest->next_output_byte = jcd->mem + Used;
+        cinfo->dest->free_in_buffer = jcd->size - Used;
+        return true;
+        }
+     }
+  return false;
+}
+
+static void JpegCompressTermDestination(j_compress_ptr cinfo)
+{
+  tJpegCompressData *jcd = (tJpegCompressData *)cinfo->client_data;
+  if (jcd) {
+     int Used = cinfo->dest->next_output_byte - jcd->mem;
+     if (Used < jcd->size) {
+        if (uchar *NewBuffer = (uchar *)realloc(jcd->mem, Used)) {
+           jcd->size = Used;
+           jcd->mem = NewBuffer;
+           }
+        else
+           syslog(LOG_ERR, "ERROR: out of memory");
+        }
+     }
+}
+
+uchar *RgbToJpeg(uchar *Mem, int Width, int Height, int &Size, int Quality)
+{
+  if (Quality < 0)
+     Quality = 0;
+  else if (Quality > 100)
+     Quality = 100;
+
+  jpeg_destination_mgr jdm;
+
+  jdm.init_destination = JpegCompressInitDestination;
+  jdm.empty_output_buffer = JpegCompressEmptyOutputBuffer;
+  jdm.term_destination = JpegCompressTermDestination;
+
+  struct jpeg_compress_struct cinfo;
+  struct jpeg_error_mgr jerr;
+  cinfo.err = jpeg_std_error(&jerr);
+  jpeg_create_compress(&cinfo);
+  cinfo.dest = &jdm;
+  tJpegCompressData jcd;
+  cinfo.client_data = &jcd;
+  cinfo.image_width = Width;
+  cinfo.image_height = Height;
+  cinfo.input_components = 3;
+  cinfo.in_color_space = JCS_RGB;
+
+  jpeg_set_defaults(&cinfo);
+  jpeg_set_quality(&cinfo, Quality, true);
+  jpeg_start_compress(&cinfo, true);
+
+  int rs = Width * 3;
+  JSAMPROW rp[Height];
+  for (int k = 0; k < Height; k++)
+      rp[k] = &Mem[rs * k];
+  jpeg_write_scanlines(&cinfo, rp, Height);
+  jpeg_finish_compress(&cinfo);
+  jpeg_destroy_compress(&cinfo);
+
+  Size = jcd.size;
+  return jcd.mem;
 }
 
 // --- cRational -------------------------------------------------------------

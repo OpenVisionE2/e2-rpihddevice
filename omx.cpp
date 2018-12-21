@@ -888,9 +888,10 @@ void cOmx::SetVolume(int vol)
 	volume.bLinear = OMX_TRUE;
 	volume.sVolume.nValue = vol * 100 / 255;
 
-	if (OMX_SetConfig(ILC_GET_HANDLE(m_comp[eAudioRender]),
-			OMX_IndexConfigAudioVolume, &volume) != OMX_ErrorNone)
-		syslog(LOG_ERR, "[cOmx] failed to set volume!");
+// FIXME
+// 	if (OMX_SetConfig(ILC_GET_HANDLE(m_comp[eAudioRender]),
+//			OMX_IndexConfigAudioVolume, &volume) != OMX_ErrorNone)
+//		syslog(LOG_ERR, "[cOmx] failed to set volume!");
 }
 
 void cOmx::SetMute(bool mute)
@@ -900,9 +901,10 @@ void cOmx::SetMute(bool mute)
 	amute.nPortIndex = 100;
 	amute.bMute = mute ? OMX_TRUE : OMX_FALSE;
 
-	if (OMX_SetConfig(ILC_GET_HANDLE(m_comp[eAudioRender]),
-			OMX_IndexConfigAudioMute, &amute) != OMX_ErrorNone)
-		syslog(LOG_ERR, "[cOmx] failed to set mute state!");
+// FIXME
+//	if (OMX_SetConfig(ILC_GET_HANDLE(m_comp[eAudioRender]),
+//			OMX_IndexConfigAudioMute, &amute) != OMX_ErrorNone)
+//		syslog(LOG_ERR, "[cOmx] failed to set mute state!");
 }
 
 void cOmx::StopVideo(void)

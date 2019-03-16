@@ -2,9 +2,9 @@ This is a "plugin" for Enigma2.
 
 Written by:                  Thomas Reufer <thomas@reufer.ch>
 
-Modified by:				 PLi-metas Team			
+Modified by:				 Open Vision Team			
 
-Project's homepage:          https://github.com/PLi-metas/e2-rpihddevice
+Project's homepage:          https://github.com/OpenVisionE2/e2-rpihddevice
 
 See the file COPYING for license information.
 
@@ -43,7 +43,7 @@ Install:
   VDR plugin:
 
   $ cd /usr/src/vdr/PLUGINS/src
-  $ git clone https://github.com/PLi-metas/e2-rpihddevice.git rpihddevice
+  $ git clone https://github.com/OpenVisionE2/e2-rpihddevice.git rpihddevice
   $ cd rpihddevice
   $ make
   $ make install

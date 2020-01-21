@@ -20,7 +20,7 @@
 #include "rpisetup.h"
 #include "rpidisplay.h"
 
-static const char *VERSION        = "1.0.4";
+static const char *VERSION        = "1.0.5";
 static const char *DESCRIPTION    = "HD output device for Raspberry Pi";
 
 class cRpiHdDevice /*: public cPlugin*/

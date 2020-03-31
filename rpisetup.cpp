@@ -368,4 +368,4 @@ void cRpiSetup::ProcessArgs(int videolayer, int outdisplay)
 								4: LCD,
 								5: TV/HDMI,
 								6: non-default display
-/*
+*/

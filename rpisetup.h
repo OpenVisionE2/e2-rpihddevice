@@ -151,8 +151,7 @@ public:
 	static void SetAudioSetupChangedCallback(void (*callback)(void*), void* data = 0);
 	static void SetVideoSetupChangedCallback(void (*callback)(void*), void* data = 0);
 
-	bool ProcessArgs(int argc, char *argv[]);
-	const char *CommandLineHelp(void);
+	void ProcessArgs(int videolayer, int outdisplay);
 
 private:
 

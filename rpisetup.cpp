@@ -341,56 +341,31 @@ void cRpiSetup::Set(AudioParameters audio, VideoParameters video)
 
 }
 
-bool cRpiSetup::ProcessArgs(int argc, char *argv[])
+void cRpiSetup::ProcessArgs(int videolayer, int outdisplay)
 {
-	const int cDisplayOpt = 0x100;
-	static struct option long_options[] = {		
-			{ "display",     required_argument, NULL, cDisplayOpt },
-			{ "video-layer", required_argument, NULL, 'v'         },
-			{ 0, 0, 0, 0 }
-	};
-	int c;
-	while ((c = getopt_long(argc, argv, "do:v:", long_options, NULL)) != -1)
+	m_plugin.videoLayer = videolayer;
+	switch (outdisplay)
 	{
-		switch (c)
-		{
-		case 'v':
-			m_plugin.videoLayer = atoi(optarg);
-			break;
-		case cDisplayOpt:
-		{
-			int d = atoi(optarg);
-			switch (d)
-			{
-			case 0:
-			case 4:
-			case 5:
-			case 6:
-				m_plugin.display = d;
-				break;
-			default:
-				syslog(LOG_ERR, "[cRpiSetup] invalid device id (%d), using default display!", d);
-				break;
-			}
-		}
+		case 0:
+		case 4:
+		case 5:
+		case 6:
+			m_plugin.display = outdisplay;
 			break;
 		default:
-			return false;
-		}
+			syslog(LOG_ERR, "[cRpiSetup] invalid device id (%d), using default display!", outdisplay);
+			break;
 	}
 	syslog(LOG_DEBUG, "[cRpiSetup] dispmanx layers: video=%d, display=%d",
 			m_plugin.videoLayer, m_plugin.display);
-
-	return true;
 }
 
-const char *cRpiSetup::CommandLineHelp(void)
-{
-	return	
-			"  -v,       --video-layer  dispmanx layer for video (default 0)\n"
-			"            --display      display used for output:\n"
-			"                           0: default display (default)\n"
-			"                           4: LCD\n"
-			"                           5: TV/HDMI\n"
-			"                           6: non-default display\n";
-}
+/*	cRpiSetup Args
+------------------------------------------------------------------
+	int videolayer			dispmanx layer for video (default 0)
+	int outdisplay			display used for output:
+								0: default display (default),
+								4: LCD,
+								5: TV/HDMI,
+								6: non-default display
+/*

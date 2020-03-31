@@ -34,8 +34,7 @@ public:
 	virtual ~cRpiHdDevice();
 	virtual const char *Version(void) { return VERSION; }
 	virtual const char *Description(void) { return DESCRIPTION; }
-	virtual const char *CommandLineHelp(void);
-	virtual bool ProcessArgs(int argc, char *argv[]);
+	virtual void ProcessArgs(int videolayer , int outdisplay);
 	virtual bool Initialize(void);
 	virtual bool Start(void);
 	virtual void Stop(void);
@@ -98,13 +97,9 @@ bool cRpiHdDevice::SetupParse(const char *Name, const char *Value)
 	return cRpiSetup::GetInstance()->Parse(Name, Value);
 }
 /*	Process Argument passed on start TO BE REMOVED or TUNED on Enigma2	*/
-bool cRpiHdDevice::ProcessArgs(int argc, char *argv[])
+void cRpiHdDevice::ProcessArgs(int videolayer, int outdisplay)
 {
-	return cRpiSetup::GetInstance()->ProcessArgs(argc, argv);
+	cRpiSetup::GetInstance()->ProcessArgs(videolayer, outdisplay);
 }
-/*	Show command line help TO BE REMOVED on Enigma2	*/
-const char *cRpiHdDevice::CommandLineHelp(void)
-{
-	return cRpiSetup::GetInstance()->CommandLineHelp();
-}
+
 

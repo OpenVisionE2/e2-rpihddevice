@@ -9,8 +9,8 @@
 E2LIB = rpihddevice
 
 ### The version number of this lib (taken from the main source file):
-MAJOR = 1
-MINOR = 0.4
+MAJOR = 10
+MINOR = 2.0
 VERSION = $(MAJOR).$(MINOR)
 
 ### The directory environment:

@@ -168,7 +168,7 @@ public:
 
 	int DeInit(void)
 	{
-		av_free_packet(&m_packet);
+		av_packet_unref(&m_packet);
 		return 0;
 	}
 
@@ -1189,13 +1189,21 @@ cRpiAudioDecoder::~cRpiAudioDecoder()
 	delete m_wait;
 }
 
+static inline void
+lavcodec_register_all(void)
+{
+#if LIBAVCODEC_VERSION_MAJOR < 58
+	avcodec_register_all();
+#endif
+}
+
 int cRpiAudioDecoder::Init(void)
 {
 	int ret = m_parser->Init();
 	if (ret)
 		return ret;
 
-	avcodec_register_all();
+	lavcodec_register_all();
 
 	m_codecs[cAudioCodec::ePCM     ].codec = NULL;
 	m_codecs[cAudioCodec::eMPG     ].codec = avcodec_find_decoder(AV_CODEC_ID_MP3);
@@ -1384,11 +1392,25 @@ void cRpiAudioDecoder::Action(void)
 			// ... or decode if there's no leftover
 			else if (!frame->nb_samples)
 			{
-				int gotFrame = 0;
-				int len = avcodec_decode_audio4(m_codecs[codec].context,
-						frame, &gotFrame, m_parser->Packet());
-
-				if (len > 0 && gotFrame)
+				bool gotFrame = false;
+				int len = avcodec_receive_frame(m_codecs[codec].context, frame);
+				if (len == 0)
+					gotFrame = true;
+				if (len == AVERROR(EAGAIN))
+					len = 0;
+				if (len == 0)
+					len = avcodec_send_packet(m_codecs[codec].context, m_parser->Packet());
+				if (len == AVERROR(EAGAIN))
+					len = 0;
+				else if (len < 0)
+				{
+					syslog(LOG_DEBUG, "[cRpiAudioDecoder] cAudioDecoder() audio decode error");
+					continue;
+				}
+				else
+					len = m_parser->Packet()->size;
+				
+				if (len >= 0 && gotFrame)
 				{
 					frame->pts = m_parser->GetPts();
 					m_parser->Shrink(len);
